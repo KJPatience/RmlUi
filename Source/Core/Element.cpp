@@ -3064,7 +3064,8 @@ void Element::OnStyleSheetChangeRecursive()
 void Element::OnDpRatioChangeRecursive()
 {
 	meta->effects.DirtyEffects();
-	GetStyle()->DirtyPropertiesWithUnits(Unit::DP_SCALABLE_LENGTH);
+	// Properties using var() store an unresolved unit; dirty them too, they may resolve to dp.
+	GetStyle()->DirtyPropertiesWithUnits(Unit::DP_SCALABLE_LENGTH | Unit::VAR_EXPRESSION | Unit::SHORTHAND_PLACEHOLDER);
 
 	OnDpRatioChange();
 
